@@ -63,7 +63,7 @@ if __name__ == "__main__":
             for j in range(cite_no):
                 image_name = random.choice(files)
                 src_path = os.path.join(src,cls,image_name)
-                dst_path = os.path.join(dst,subset,cls,image_name)
+                dst_path = os.path.join(dst,subset,cls,f'{cls}_{j}.jpg')
                 shutil.copy(src_path,dst_path)
 
     exit(0)

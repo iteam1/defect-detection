@@ -1,36 +1,37 @@
 '''
 python3 utils/split.py
 '''
-
-import cv2
-import sys
 import os
+import cv2
 
-if not os.path.exists('patches'):
-    os.makedirs('patches')
+# Init
+DIM = 128
+dst = 'dst'
+if not os.path.exists(dst):
+    os.mkdir(dst)
 
-nRows = 10 #int(sys.argv[2])
-# Number of columns
-mCols = 10 #int(sys.argv[3])
+img_path = 'assets/concrete.jpg'
 
-# Reading image
-img = cv2.imread('dataset/test/crack/1639043382760_image_detect_device_0_side_1_1_crop.jpg')
-#print img
+img = cv2.imread(img_path)
 
-#cv2.imshow('image',img)
+if __name__ == "__main__":
 
-# Dimensions of the image
-sizeX = img.shape[1]
-sizeY = img.shape[0]
-
-print(img.shape)
-
-
-for i in range(0,nRows):
-    for j in range(0, mCols):
-        roi = img[i*sizeY/nRows:i*sizeY/nRows + sizeY/nRows ,j*sizeX/mCols:j*sizeX/mCols + sizeX/mCols]
-        cv2.imshow('rois'+str(i)+str(j), roi)
-        cv2.imwrite('patches/patch_'+str(i)+str(j)+".jpg", roi)
-
-
-cv2.waitKey()
+    H,W,_ = img.shape
+    cols = int(W/DIM)
+    rows = int(H/DIM)
+    dim = (cols*DIM,rows*DIM)
+    img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+    cell_no = 0
+    print(f'cols: {cols} rows: {rows}')
+    for r in range(rows):
+        for c in range(cols):
+            y_start = r*DIM
+            x_start = c*DIM
+            y_end = (r+1)*DIM
+            x_end = (c+1)*DIM
+            cell = img[y_start:y_end,x_start:x_end]
+            #cv2.imwrite(f'{dst}/cell_{cell_no}.jpg',cell)
+            cell_no +=1
+            cv2.rectangle(img, (x_start,y_start), (x_end,y_end), (100,100,0), 2)
+    
+    cv2.imwrite('tmp.jpg',img)
