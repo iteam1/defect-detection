@@ -1,5 +1,5 @@
 '''
-python3 pytorch/train.py
+python3 train.py
 '''
 import os
 import time
@@ -19,6 +19,11 @@ from tempfile import TemporaryDirectory
 DIM = 128
 batch_size = 16
 epochs = 10
+dst = 'training'
+model_path = os.path.join(dst,'checkpoint.pt')
+
+if not os.path.exists(dst):
+    os.mkdir(dst)
 
 transform = transforms.Compose([
     transforms.Resize((DIM,DIM)),
@@ -37,6 +42,12 @@ classes = trainset.classes
 num_classes = len(classes)
 
 print('Total: ',num_classes,'\nclasses: ',classes)
+# save classes
+with open(os.path.join(dst,'classes.txt'), 'w') as f:
+    for cls in classes:
+        # write each item on a new line
+        f.write("%s\n" % cls)
+    print('Done')
 
 dataloders = {'train':trainloader,
                 'val':valloader}
@@ -86,6 +97,9 @@ def train_one_epoch(model, optimizer, data_loader, device):
             total = 0
             correct = 0
 
+    # save model
+    torch.save(model, model_path)
+
 def test_model(model, data_loader):
 
     model.eval()
@@ -124,9 +138,6 @@ if __name__ == "__main__":
     # Use a pre-trained ResNet18
     model = models.resnet18(pretrained=True)
 
-    # Convert model to grayscale
-    #model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-
     # Update the fully connected layer based on the number of classes in the dataset
     model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
 
@@ -139,7 +150,8 @@ if __name__ == "__main__":
     for epoch in range(epochs):  # loop over the dataset multiple times
         print("------------------ Training Epoch {} ------------------".format(epoch+1))
         train_one_epoch(model, optimizer, trainloader, device)
-
         test_model(model, valloader)
+    
+    torch.save(model, model_path)
 
     print('Finished Training')
