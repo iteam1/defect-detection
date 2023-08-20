@@ -1,5 +1,5 @@
 # crack-detection
-use machine learning detect crack on surface
+use `grid classification` method for detecting crack on surface
 
 ![res](assets/res.jpg)
 
