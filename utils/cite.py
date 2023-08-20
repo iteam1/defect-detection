@@ -14,7 +14,7 @@ val_path = os.path.join(dst,'val')
 test_path = os.path.join(dst,'test')
 subsets_path = [train_path,val_path,test_path]
 subsets = ['train','val','test']
-sizes = [0.2,0.05,0.05] # train, val, test
+sizes = [0.7,0.3,0.1] # train, val, test
 
 # check source dataset
 if not os.path.exists(src):
