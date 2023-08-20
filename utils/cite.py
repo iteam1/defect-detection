@@ -1,5 +1,5 @@
 '''
-python3 utils/cite.py images
+python3 utils/cite.py path/to/images
 '''
 import os
 import sys

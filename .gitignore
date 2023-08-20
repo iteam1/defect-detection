@@ -16,8 +16,3 @@ venv
 myconda
 
 # folders
-dst
-src
-tmp
-images
-dataset
