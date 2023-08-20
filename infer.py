@@ -5,7 +5,6 @@ import os
 import sys
 import torch
 from PIL import Image
-from torchvision.transforms import transforms
 from torchvision import models, transforms
 
 # Init
@@ -57,5 +56,3 @@ if __name__ == "__main__":
     print(img_path,classes[output])
 
     print('Done!')
-
-
