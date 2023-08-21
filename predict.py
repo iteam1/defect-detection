@@ -1,6 +1,5 @@
 '''
 python3 predict.py /path/to/image
-python3 predict.py assets/concrete.jpg
 '''
 import os
 import sys
